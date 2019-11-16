@@ -1,6 +1,6 @@
 import awscala._, ec2._
 
-object EC2Main extends App {
+object Ec2Main extends App {
   implicit val ec2: EC2 = EC2.at(Region.Tokyo)
 
   val existings = ec2.instances

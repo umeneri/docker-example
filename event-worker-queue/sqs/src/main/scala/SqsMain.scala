@@ -1,6 +1,6 @@
 import awscala._, sqs._
 
-object SQSMain extends App {
+object SqsMain extends App {
   implicit val sqs: SQS = SQS.at(Region.Tokyo)
 
   val queue: Queue = sqs.createQueueAndReturnQueueName("awscala-queue")
