@@ -13,17 +13,6 @@ object EC2Main extends App {
   for {
     instance <- instances
   } {
-    val pathname = s"${System.getProperty("user.home")}/.ssh/terraform"
-    println(pathname)
     println(instance)
-    instance.withKeyPair(new java.io.File(pathname)) { i =>
-      // optional: scala-ssh (https://github.com/sirthias/scala-ssh)
-      i.ssh { ssh =>
-        ssh.exec("ls -la").map { result =>
-          println(s"------\n${i.instanceId} Result:\n" + result.stdOutAsString())
-        }
-      }
-    }
-    instance.terminate()
   }
 }
