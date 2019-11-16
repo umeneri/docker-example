@@ -1,0 +1,14 @@
+version: '3'
+services:
+  sharded-redis-0.redis:
+    image: redis
+  twemproxy:
+    image: ganomede/twemproxy
+    command: [ "nutcracker", "-c", "/etc/config/nutcracker.yaml", "-s", "6222" ]
+    volumes:
+      - ./twemproxy:/etc/config
+    depends_on:
+      - sharded-redis-0.redis
+    ports:
+      - 6379:6379
+      - 6222:6222
