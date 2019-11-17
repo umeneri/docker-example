@@ -17,6 +17,7 @@ resource "aws_ecs_service" "app_ecs_service" {
     subnets = [
       "${aws_subnet.app_subnet_a.id}",
       "${aws_subnet.app_subnet_c.id}"]
+    assign_public_ip = true
   }
 }
 

@@ -9,7 +9,7 @@
   "loadBalancers": [],
   "networkConfiguration": {
     "awsvpcConfiguration": {
-      "assignPublicIp": "DISABLED",
+      "assignPublicIp": "ENABLED",
       "securityGroups": [],
       "subnets": [
         "subnet-0cd84df326cf903d9",
