@@ -17,6 +17,7 @@ data "aws_iam_policy_document" "app_task_policy_document" {
   statement {
     actions = [
       "ecs:DescribeClusters",
+      "sqs:*",
     ]
 
     resources = [

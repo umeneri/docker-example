@@ -6,6 +6,20 @@ variable "log_group" {
   default = "/ecs/fargat/task"
 }
 
+resource "aws_ecs_service" "app_ecs_service" {
+  name = "${var.task_name}-${var.stage}-service"
+  cluster = "${aws_ecs_cluster.app_ecs_cluster.id}"
+  task_definition = "${aws_ecs_task_definition.app_task_definition.arn}"
+  desired_count = 2
+  //  iam_role        = "${aws_iam_role.app_task_role.arn}"
+  launch_type = "FARGATE"
+  network_configuration {
+    subnets = [
+      "${aws_subnet.app_subnet_a.id}",
+      "${aws_subnet.app_subnet_c.id}"]
+  }
+}
+
 resource "aws_ecs_task_definition" "app_task_definition" {
   family = "${var.task_name}-${var.stage}-task-definition"
   requires_compatibilities = [
