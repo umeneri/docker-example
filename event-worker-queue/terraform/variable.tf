@@ -1,18 +1,22 @@
 provider "aws" {
-  region     = "ap-northeast-1"
+  region = "ap-northeast-1"
 }
 
 terraform {
   backend "s3" {
     bucket = "terraform-state-es"
-    key    = "event-queue.tfstate"
-    region     = "ap-northeast-1"
+    key = "event-queue.tfstate"
+    region = "ap-northeast-1"
     profile = "terraform"
   }
 }
 
-variable "category" { default = "example" }
-variable aws_profile { default = "terraform" }
+variable "category" {
+  default = "example"
+}
+variable aws_profile {
+  default = "terraform"
+}
 //variable "access_key" {}
 //variable "secret_key" {}
 variable "region" {
