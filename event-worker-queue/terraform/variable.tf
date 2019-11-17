@@ -24,7 +24,7 @@ variable "region" {
 }
 
 variable "task_name" {
-  default = "ls-test"
+  default = "sqs-sbt"
 }
 
 variable "stage" {
