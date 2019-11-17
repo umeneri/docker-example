@@ -61,7 +61,7 @@ resource "aws_cloudwatch_event_rule" "app_event_rule" {
   name = "${var.task_name}-${var.stage}-event-rule"
   description = "Runs fargate task ${var.task_name}"
   schedule_expression = "${var.schedule_expression}"
-  is_enabled = true
+  is_enabled = false
 }
 
 resource "aws_cloudwatch_event_target" "app_scheduled_task" {
