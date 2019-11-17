@@ -42,3 +42,7 @@ ecs-cli \
 [【AWS】初めてのECR - Qiita](https://qiita.com/3utama/items/b19e2239edb6996a735f)
 
 - scheduled task: [terraform-ecs-fargate-scheduled-task/ecs.tf at master · turnerlabs/terraform-ecs-fargate-scheduled-task](https://github.com/turnerlabs/terraform-ecs-fargate-scheduled-task/blob/master/env/dev/ecs.tf)
+
+## deploy
+- [ecs-deployを使ったAmazon ECSへのデプロイの裏側 - MogLog](https://sandragon.hatenablog.com/entry/2019/04/14/211209)
+
