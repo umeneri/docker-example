@@ -33,4 +33,4 @@ scalacOptions ++= Seq(
   "-language:_"
 )
 
-mainClass in Global := Some("com.sg.FrontendMain")
+mainClass in Global := Some("com.sg.ServerApp")
