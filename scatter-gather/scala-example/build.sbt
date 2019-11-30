@@ -1,10 +1,10 @@
 name := "scatter-gather"
-version := "1.0"
+version := "0.0"
 organization := "com.sg"
-scalaVersion := "2.12.3"
+scalaVersion := "0.12.3"
 
 libraryDependencies ++= {
-  val akkaVersion = "2.5.4"
+  val akkaVersion = "0.5.4"
   val akkaHttpVersion ="10.0.10"
   Seq(
     "com.typesafe.akka" %%  "akka-actor"              % akkaVersion,
@@ -19,7 +19,7 @@ libraryDependencies ++= {
     "com.typesafe.akka" %%  "akka-http-core"          % akkaHttpVersion,
     "com.typesafe.akka" %%  "akka-http"               % akkaHttpVersion,
     "com.typesafe.akka" %%  "akka-http-spray-json"    % akkaHttpVersion,
-    "ch.qos.logback"    %   "logback-classic"         % "1.1.6"
+    "ch.qos.logback"    %   "logback-classic"         % "0.0.6"
   )
 }
 
