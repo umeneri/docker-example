@@ -20,11 +20,15 @@ class LeafRouteTest extends FunSpec
       it("should get matching documents") {
         val LeafRoute = new LeafRoute()
         lazy val routes: Route = LeafRoute.routes
-        val request = Get("/search/1")
+        val request = Get("/search/0,1")
 
         val expected =
           """{
             |  "hits" : [
+            |    {
+            |      "id" : 0,
+            |      "body" : "dog0"
+            |    },
             |    {
             |      "id" : 1,
             |      "body" : "dog1"
