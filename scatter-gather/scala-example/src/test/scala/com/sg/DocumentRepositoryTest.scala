@@ -15,5 +15,4 @@ class DocumentRepositoryTest extends FunSpec with Matchers {
       docs(1) shouldBe Document(1, "dog1")
     }
   }
-
 }

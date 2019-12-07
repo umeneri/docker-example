@@ -8,10 +8,11 @@ object ServerApp extends App
     with Startup {
   val config = ConfigFactory.load("server")
 
-  implicit val system = ActorSystem("frontend", config)
+  private val name = "frontend"
+  implicit val system = ActorSystem(name, config)
 
   val api = new LeafRoute() {
-    val log = Logging(system.eventStream, "frontend")
+    val log = Logging(system.eventStream, name)
     implicit val requestTimeout = configuredRequestTimeout(config)
     implicit def executionContext = system.dispatcher
   }

@@ -2,19 +2,22 @@ package com.sg
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
+import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
+import io.circe.syntax._
 
-class LeafRoute {
+class LeafRoute extends FailFastCirceSupport {
   val documentRepository = DocumentRepository()
 
-  def routes: Route = pathPrefix("search" / Segment) { docIdsStr =>
+  def routes: Route = pathPrefix("search" / Segment) { docIdsParam =>
     pathEndOrSingleSlash {
       get {
-        println(docIdsStr)
+        println(docIdsParam)
 
-        val docIds = docIdsStr.split(",").toSeq.map(_.toInt)
+        val docIds = docIdsParam.split(",").toSeq.map(_.toInt)
         val docsJson = documentRepository.findAll(docIds)
-
-        complete(docsJson.toString())
+//        println(docsJson.asJson.toString())
+//        complete(docsJson.asJson.toString())
+        complete("")
       }
     }
   }
