@@ -1,17 +1,17 @@
 package com.sg
 
-import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
 
-class RootRoute {
+class RootRoute(client: HttpClient) {
 
-  import StatusCodes._
+  val url = ""
 
   def routes: Route = pathPrefix("search") {
     pathEndOrSingleSlash {
       get {
-        complete(OK)
+        val response = client.request(url)
+        complete(response)
       }
     }
   }
