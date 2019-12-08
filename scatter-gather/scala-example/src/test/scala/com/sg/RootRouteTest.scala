@@ -1,29 +1,26 @@
 package com.sg
 
 import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import io.circe.parser._
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FunSpec, Matchers}
 
+import scala.concurrent.Future
+
 class RootRouteTest extends FunSpec
   with Matchers
   with ScalaFutures
   with ScalatestRouteTest
   with MockitoSugar
-  with ArgumentMatchersSugar
-{
-
-  val client: HttpClient = ???
+  with ArgumentMatchersSugar {
 
   describe("route") {
 
     it("should return search response") {
-      val routes = new RootRoute(client).routes
-      val request = Get("/search?q=cat%20dog")
-
-      val expected =
+      val json =
         """{
           |  "hits" : [
           |    {
@@ -42,13 +39,23 @@ class RootRouteTest extends FunSpec
           |      "id" : 1,
           |      "body" : "cat1"
           |    }
-          |          |
           |  ]
           |}""".stripMargin
 
+      val routes: Route = new RootRoute {
+        override val client: AkkaHttpClient = new AkkaHttpClient {
+          override def request(url: String): Future[String] =
+            Future.successful(json)
+        }
+      }.routes
+      //      val routes = new RootRoute.routes
+      val request = Get("/search?q=cat%20dog")
+
       request ~> routes ~> check {
         status should ===(StatusCodes.OK)
-        parse(entityAs[String]).right.get.toString() should ===(expected)
+        val str = entityAs[String]
+        println(str)
+        parse(str).right.get.toString() should ===(json)
       }
     }
   }
