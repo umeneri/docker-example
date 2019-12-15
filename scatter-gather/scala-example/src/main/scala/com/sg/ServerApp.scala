@@ -8,7 +8,7 @@ object ServerApp extends App
     with Startup {
   val config = ConfigFactory.load("server")
 
-  private val name = sys.env.getOrElse("SERVER_NAME", "leaf")
+  private val name = sys.env.getOrElse("SERVER_TYPE", "leaf")
   implicit val system = ActorSystem(name, config)
   implicit def executionContext = system.dispatcher
 

@@ -1,0 +1,24 @@
+version: '3'
+services:
+  root:
+    build: .
+    container_name: root_node
+    environment:
+      - SERVER_TYPE=root
+    ports:
+      - 5000:5000
+
+  leaf1:
+    build: .
+    container_name: leaf1_node
+    environment:
+      - SERVER_TYPE=leaf
+    ports:
+      - 5001:5001
+  leaf2:
+    build: .
+    container_name: leaf2_node
+    environment:
+      - SERVER_TYPE=leaf
+    ports:
+      - 5002:5002
