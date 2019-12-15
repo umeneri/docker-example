@@ -18,21 +18,23 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
   def routes: Route = pathPrefix("search") {
     pathEndOrSingleSlash {
       get {
-        val response = Future.sequence {
-          urls.map { url =>
-            client.request(url).map { res =>
-              decode[LeafResponse](res).toOption
-            }
-          }
-        }.map { responses =>
-          val hits = responses.flatten.flatMap(_.hits)
-          LeafResponse(hits)
-        }
-
-        onSuccess(response) { res =>
+        onSuccess(fetchLeafResponse) { res =>
           complete(res.asJson.toString())
         }
       }
+    }
+  }
+
+  private def fetchLeafResponse: Future[LeafResponse] = {
+    Future.sequence {
+      urls.map { url =>
+        client.request(url).map { res =>
+          decode[LeafResponse](res).toOption
+        }
+      }
+    }.map { responses =>
+      val hits = responses.flatten.flatMap(_.hits)
+      LeafResponse(hits)
     }
   }
 }
