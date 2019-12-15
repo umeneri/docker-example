@@ -5,8 +5,8 @@ import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import com.sg.model.LeafResponse
 import io.circe.generic.auto._
-import io.circe.parser._
 import io.circe.syntax._
+import io.circe.parser._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -21,8 +21,7 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
         val response = Future.sequence {
           urls.map { url =>
             client.request(url).map { res =>
-              println(res)
-              getLeafResponse(res)
+              decode[LeafResponse](res).toOption
             }
           }
         }.map { responses =>
@@ -35,9 +34,5 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
         }
       }
     }
-  }
-
-  def getLeafResponse(res: String): Option[LeafResponse] = {
-    decode[LeafResponse](res).toOption
   }
 }

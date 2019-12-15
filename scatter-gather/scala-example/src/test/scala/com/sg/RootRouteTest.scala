@@ -3,6 +3,7 @@ package com.sg
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
+import com.sg.model.LeafResponse
 import io.circe.parser._
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.concurrent.ScalaFutures
@@ -42,10 +43,38 @@ class RootRouteTest extends FunSpec
           |  ]
           |}""".stripMargin
 
+      val dogJson =
+        """{
+          |  "hits" : [
+          |    {
+          |      "id" : 0,
+          |      "body" : "dog0"
+          |    },
+          |    {
+          |      "id" : 1,
+          |      "body" : "dog1"
+          |    }
+          |  ]
+          |}""".stripMargin
+
+      val catJson =
+        """{
+          |  "hits" : [
+          |    {
+          |      "id" : 0,
+          |      "body" : "cat0"
+          |    },
+          |    {
+          |      "id" : 1,
+          |      "body" : "cat1"
+          |    }
+          |  ]
+          |}""".stripMargin
+
       val routes: Route = new RootRoute {
-        override val client: AkkaHttpClient = mock[AkkaHttpClient]
-        when(client.request(urls.head)).thenReturn(Future.successful(""))
-        when(client.request(urls(1))).thenReturn(Future.successful(""))
+        override val client = mock[AkkaHttpClient]
+        when(client.request(urls.head)).thenReturn(Future.successful(dogJson))
+        when(client.request(urls(1))).thenReturn(Future.successful(catJson))
       }.routes
       val request = Get("/search?q=cat%20dog")
 
