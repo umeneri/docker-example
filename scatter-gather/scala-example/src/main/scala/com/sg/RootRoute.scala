@@ -26,13 +26,11 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
             }
           }
         }.map { responses =>
-          println(responses)
           val hits = responses.flatten.flatMap(_.hits)
           LeafResponse(hits)
         }
 
         onSuccess(response) { res =>
-          println(res)
           complete(res.asJson.toString())
         }
       }
