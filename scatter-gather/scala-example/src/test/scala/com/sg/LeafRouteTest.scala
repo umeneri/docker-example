@@ -16,7 +16,45 @@ class LeafRouteTest extends FunSpec
   with ArgumentMatchersSugar {
   {
 
-    describe("testRoutes") {
+    describe("leafRoute") {
+      it("should get empty document") {
+        val LeafRoute = new LeafRoute()
+        lazy val routes: Route = LeafRoute.routes
+        val request = Get("/search?docs=8")
+
+        val expected =
+          """{
+            |  "hits" : [
+            |  ]
+            |}""".stripMargin
+
+        request ~> routes ~> check {
+          status should ===(StatusCodes.OK)
+          parse(entityAs[String]).right.get.toString() should ===(expected)
+        }
+      }
+
+      it("should get matching one document") {
+        val LeafRoute = new LeafRoute()
+        lazy val routes: Route = LeafRoute.routes
+        val request = Get("/search?docs=1")
+
+        val expected =
+          """{
+            |  "hits" : [
+            |    {
+            |      "id" : 1,
+            |      "body" : "dog1"
+            |    }
+            |  ]
+            |}""".stripMargin
+
+        request ~> routes ~> check {
+          status should ===(StatusCodes.OK)
+          parse(entityAs[String]).right.get.toString() should ===(expected)
+        }
+      }
+
       it("should get matching documents") {
         val LeafRoute = new LeafRoute()
         lazy val routes: Route = LeafRoute.routes
