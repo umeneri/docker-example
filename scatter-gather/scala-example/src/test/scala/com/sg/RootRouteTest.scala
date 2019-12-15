@@ -17,7 +17,7 @@ class RootRouteTest extends FunSpec
   with MockitoSugar
   with ArgumentMatchersSugar {
 
-  describe("route") {
+  describe("rootRoute") {
 
     it("should return search response") {
       val json =
@@ -43,12 +43,10 @@ class RootRouteTest extends FunSpec
           |}""".stripMargin
 
       val routes: Route = new RootRoute {
-        override val client: AkkaHttpClient = new AkkaHttpClient {
-          override def request(url: String): Future[String] =
-            Future.successful(json)
-        }
+        override val client: AkkaHttpClient = mock[AkkaHttpClient]
+        when(client.request(urls.head)).thenReturn(Future.successful(""))
+        when(client.request(urls(1))).thenReturn(Future.successful(""))
       }.routes
-      //      val routes = new RootRoute.routes
       val request = Get("/search?q=cat%20dog")
 
       request ~> routes ~> check {
