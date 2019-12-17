@@ -1,4 +1,4 @@
-package com.sg
+package com.sg.repository
 
 import com.sg.model.Document
 import org.scalatest.{FunSpec, Matchers}

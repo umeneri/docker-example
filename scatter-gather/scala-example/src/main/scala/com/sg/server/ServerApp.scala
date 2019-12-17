@@ -1,7 +1,8 @@
-package com.sg
+package com.sg.server
 
 import akka.actor.ActorSystem
 import akka.event.Logging
+import com.sg.node.{LeafRoute, RootRoute}
 import com.typesafe.config.ConfigFactory
 
 object ServerApp extends App

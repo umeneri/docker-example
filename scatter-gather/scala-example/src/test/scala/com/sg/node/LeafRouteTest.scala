@@ -1,4 +1,4 @@
-package com.sg
+package com.sg.node
 
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Route

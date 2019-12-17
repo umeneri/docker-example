@@ -1,4 +1,4 @@
-package com.sg
+package com.sg.server
 
 import akka.util.Timeout
 import com.typesafe.config.Config
