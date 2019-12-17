@@ -12,7 +12,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class RootRoute()(implicit ec: ExecutionContext) extends Node {
 
-  val urls: Seq[String] = Seq("http://localhost:5001/search", "http://localhost:5002/search")
+  val urls: Seq[String] = Seq("http://localhost:5000/search?docs=0", "http://localhost:5001/search?docs=0")
   val client = new AkkaHttpClient()
 
   def routes: Route = pathPrefix("search") {
@@ -29,6 +29,7 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
     Future.sequence {
       urls.map { url =>
         client.request(url).map { res =>
+          println(res)
           decode[LeafResponse](res).toOption
         }
       }

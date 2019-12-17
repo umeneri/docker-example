@@ -5,6 +5,8 @@ scalaVersion := "2.12.3"
 
 lazy val circeVersion = "0.10.0"
 
+enablePlugins(JavaAppPackaging)
+
 libraryDependencies ++= {
   val akkaVersion = "2.5.25"
   val akkaHttpVersion = "10.0.10"
@@ -37,10 +39,10 @@ scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked",
   "-Xlint",
-  "-Ywarn-unused",
-  "-Ywarn-dead-code",
+  "-Ywarn-unused", "-Ywarn-dead-code",
   "-feature",
   "-language:_"
 )
+
 
 mainClass in Global := Some("com.sg.ServerApp")

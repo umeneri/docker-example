@@ -5,7 +5,7 @@ import akka.event.Logging
 import com.typesafe.config.ConfigFactory
 
 object ServerApp extends App
-    with Startup {
+  with Startup {
   val config = ConfigFactory.load("server")
 
   private val name = sys.env.getOrElse("SERVER_TYPE", "leaf")
