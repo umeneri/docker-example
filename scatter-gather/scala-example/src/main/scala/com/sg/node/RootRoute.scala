@@ -5,6 +5,7 @@ import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import com.sg.AkkaHttpClient
 import com.sg.model.LeafResponse
+import com.sg.repository.IndexRepository
 import io.circe.generic.auto._
 import io.circe.parser._
 import io.circe.syntax._
@@ -16,19 +17,22 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
   val urls: Seq[String] = Seq("http://localhost:5000/search?docs=0", "http://localhost:5001/search?docs=0")
   val client = new AkkaHttpClient()
 
-  def routes: Route = pathPrefix("search") {
-    pathEndOrSingleSlash {
-      get {
-        onSuccess(fetchLeafResponse) { res =>
-          complete(res.asJson.toString())
-        }
+  def routes: Route = path("search") {
+    parameter('q) { param =>
+      onSuccess(fetchLeafResponse(param)) { res =>
+        complete(res.asJson.toString())
       }
     }
   }
 
-  private def fetchLeafResponse: Future[LeafResponse] = {
+  private def fetchLeafResponse(keywords: String): Future[LeafResponse] = {
+    val words = keywords.split(",")
+    val ids = IndexRepository().getNodeIds(words).toSeq
+
     Future.sequence {
-      urls.map { url =>
+      ids.map { id =>
+        val url = s"http://localhost:500$id/search?docs=0,1"
+
         client.request(url).map { res =>
           println(res)
           decode[LeafResponse](res).toOption
