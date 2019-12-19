@@ -27,7 +27,7 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
 
   private def fetchLeafResponse(keywords: String): Future[LeafResponse] = {
     val words = keywords.split(",")
-    val ids = IndexRepository().getNodeIds(words).toSeq
+    val ids = IndexRepository().getDocumentMap(words).toSeq
 
     Future.sequence {
       ids.map { id =>
