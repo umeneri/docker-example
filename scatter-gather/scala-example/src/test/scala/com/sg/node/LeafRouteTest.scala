@@ -44,7 +44,7 @@ class LeafRouteTest extends FunSpec
             |  "hits" : [
             |    {
             |      "id" : 1,
-            |      "body" : "dog1"
+            |      "body" : "dog 1"
             |    }
             |  ]
             |}""".stripMargin
@@ -65,11 +65,11 @@ class LeafRouteTest extends FunSpec
             |  "hits" : [
             |    {
             |      "id" : 0,
-            |      "body" : "dog0"
+            |      "body" : "dog 0"
             |    },
             |    {
             |      "id" : 1,
-            |      "body" : "dog1"
+            |      "body" : "dog 1"
             |    }
             |  ]
             |}""".stripMargin

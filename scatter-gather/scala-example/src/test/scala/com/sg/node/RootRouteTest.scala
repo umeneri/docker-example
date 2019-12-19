@@ -25,20 +25,20 @@ class RootRouteTest extends FunSpec
         """{
           |  "hits" : [
           |    {
+          |      "id" : 2,
+          |      "body" : "cat 2"
+          |    },
+          |    {
+          |      "id" : 3,
+          |      "body" : "cat 3"
+          |    },
+          |    {
           |      "id" : 0,
-          |      "body" : "dog0"
+          |      "body" : "dog 0"
           |    },
           |    {
           |      "id" : 1,
-          |      "body" : "dog1"
-          |    },
-          |    {
-          |      "id" : 0,
-          |      "body" : "cat0"
-          |    },
-          |    {
-          |      "id" : 1,
-          |      "body" : "cat1"
+          |      "body" : "dog 1"
           |    }
           |  ]
           |}""".stripMargin
@@ -48,11 +48,11 @@ class RootRouteTest extends FunSpec
           |  "hits" : [
           |    {
           |      "id" : 0,
-          |      "body" : "dog0"
+          |      "body" : "dog 0"
           |    },
           |    {
           |      "id" : 1,
-          |      "body" : "dog1"
+          |      "body" : "dog 1"
           |    }
           |  ]
           |}""".stripMargin
@@ -61,27 +61,28 @@ class RootRouteTest extends FunSpec
         """{
           |  "hits" : [
           |    {
-          |      "id" : 0,
-          |      "body" : "cat0"
+          |      "id" : 2,
+          |      "body" : "cat 2"
           |    },
           |    {
-          |      "id" : 1,
-          |      "body" : "cat1"
+          |      "id" : 3,
+          |      "body" : "cat 3"
           |    }
           |  ]
           |}""".stripMargin
 
       val routes: Route = new RootRoute {
-        override val client = mock[AkkaHttpClient]
+        override val client: AkkaHttpClient = mock[AkkaHttpClient]
+        val urls: Seq[String] = Seq("http://localhost:5000/search?docs=0,1", "http://localhost:5001/search?docs=2,3")
+
         when(client.request(urls.head)).thenReturn(Future.successful(dogJson))
         when(client.request(urls(1))).thenReturn(Future.successful(catJson))
       }.routes
-      val request = Get("/search?q=cat%20dog")
+      val request = Get("/search?q=cat,dog")
 
       request ~> routes ~> check {
         status should ===(StatusCodes.OK)
         val str = entityAs[String]
-        println(str)
         parse(str).right.get.toString() should ===(json)
       }
     }

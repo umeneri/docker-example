@@ -4,7 +4,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import com.sg.AkkaHttpClient
-import com.sg.model.LeafResponse
+import com.sg.model.DocumentResponse
 import com.sg.repository.IndexRepository
 import io.circe.generic.auto._
 import io.circe.parser._
@@ -14,7 +14,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class RootRoute()(implicit ec: ExecutionContext) extends Node {
 
-  val urls: Seq[String] = Seq("http://localhost:5000/search?docs=0", "http://localhost:5001/search?docs=0")
   val client = new AkkaHttpClient()
 
   def routes: Route = path("search") {
@@ -25,7 +24,7 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
     }
   }
 
-  private def fetchLeafResponse(keywords: String): Future[LeafResponse] = {
+  private def fetchLeafResponse(keywords: String): Future[DocumentResponse] = {
     val words = keywords.split(",")
     val nodeMapping = IndexRepository().getDocumentMap(words).toSeq
 
@@ -36,12 +35,12 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
 
         client.request(url).map { res =>
           println(res)
-          decode[LeafResponse](res).toOption
+          decode[DocumentResponse](res).toOption
         }
       }
     }.map { responses =>
       val hits = responses.flatten.flatMap(_.hits)
-      LeafResponse(hits)
+      DocumentResponse(hits)
     }
   }
 }
