@@ -27,11 +27,12 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
 
   private def fetchLeafResponse(keywords: String): Future[LeafResponse] = {
     val words = keywords.split(",")
-    val ids = IndexRepository().getDocumentMap(words).toSeq
+    val nodeMapping = IndexRepository().getDocumentMap(words).toSeq
 
     Future.sequence {
-      ids.map { id =>
-        val url = s"http://localhost:500$id/search?docs=0,1"
+      nodeMapping.map { case (nodeId, docIds) =>
+        println(nodeId, docIds)
+        val url = s"http://localhost:500$nodeId/search?docs=${docIds.mkString(",")}"
 
         client.request(url).map { res =>
           println(res)

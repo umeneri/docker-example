@@ -19,12 +19,19 @@ case class IndexRepository() {
   def getDocumentMap(words: Seq[String]): Map[Int, Seq[Int]] = {
     val docIds = words.flatMap(wordIndex.get).flatten
 
-    docIds.map { docId => (nodeIndex.get(docId), docId) }
+    docIds
+      .map {
+        docId => (nodeIndex.get(docId), docId)
+      }
       .groupBy {
-        case (Some(nodeId), _) => Some(nodeId)
-      }.map {
-      case (nodeIdOpt, seq) =>
-        (nodeIdOpt.get, seq.map { case (_, docId) => docId })
-    }
+        case (id, _) => id
+      }
+      .filter {
+        case (id, _) => id.isDefined
+      }
+      .map {
+        case (nodeIdOpt, seq) =>
+          (nodeIdOpt.get, seq.map { case (_, docId) => docId })
+      }
   }
 }
