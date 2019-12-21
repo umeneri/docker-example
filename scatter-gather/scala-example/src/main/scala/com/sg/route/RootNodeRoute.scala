@@ -27,10 +27,12 @@ class RootNodeRoute()(implicit ec: ExecutionContext) extends NodeRoute {
     val nodeIds = Seq(1, 2)
 
     Future.sequence {
-      nodeIds.map { nodeId =>
-        val url = s"${NodeSetting.get(nodeId).localOrigin}/search?q=$keywords"
+      NodeSetting.getOrigins(nodeIds).map { origin =>
+        val url = s"$origin/search?q=$keywords"
+        println(url)
 
         client.request(url).map { res =>
+          println(res)
           decode[DocumentResponse](res).toOption
         }
       }
