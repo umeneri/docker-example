@@ -11,7 +11,6 @@ import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FunSpec, Matchers}
 
-import scala.collection.mutable
 import scala.concurrent.Future
 
 class RootNodeRouteTest extends FunSpec
@@ -42,11 +41,15 @@ class RootNodeRouteTest extends FunSpec
           |    {
           |      "id" : 3,
           |      "body" : "cat 3"
+          |    },
+          |    {
+          |      "id" : 4,
+          |      "body" : "cat 4"
           |    }
           |  ]
           |}""".stripMargin
 
-      val dogJson =
+      val json1 =
         """{
           |  "hits" : [
           |    {
@@ -56,11 +59,15 @@ class RootNodeRouteTest extends FunSpec
           |    {
           |      "id" : 1,
           |      "body" : "dog 1"
+          |    },
+          |    {
+          |      "id" : 4,
+          |      "body" : "cat 4"
           |    }
           |  ]
           |}""".stripMargin
 
-      val catJson =
+      val json2 =
         """{
           |  "hits" : [
           |    {
@@ -76,20 +83,13 @@ class RootNodeRouteTest extends FunSpec
 
       val routes: Route = new RootNodeRoute {
         override val client: AkkaHttpClient = mock[AkkaHttpClient]
-        override val indexRepository: IndexRepository = mock[IndexRepository]
         val urls: Seq[String] = Seq(
-          s"${NodeSetting.get(1).localOrigin}/search?docs=0,1",
-          s"${NodeSetting.get(2).localOrigin}/search?docs=2,3"
+          s"${NodeSetting.get(1).localOrigin}/search?q=dog,cat",
+          s"${NodeSetting.get(2).localOrigin}/search?q=dog,cat"
         )
 
-        when(client.request(urls.head)).thenReturn(Future.successful(dogJson))
-        when(client.request(urls(1))).thenReturn(Future.successful(catJson))
-        when(indexRepository.getDocumentMap(any[Seq[String]])).thenReturn(
-          Map(
-            NodeSetting.get(1) -> Seq(0, 1),
-            NodeSetting.get(2) -> Seq(2, 3),
-          )
-        )
+        when(client.request(urls.head)).thenReturn(Future.successful(json1))
+        when(client.request(urls(1))).thenReturn(Future.successful(json2))
       }.routes
       val request = Get("/search?q=dog,cat")
 

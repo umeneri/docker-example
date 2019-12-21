@@ -20,7 +20,7 @@ class LeafNodeRouteTest extends FunSpec
       it("should get empty document") {
         val LeafRoute = new LeafNodeRoute()
         lazy val routes: Route = LeafRoute.routes
-        val request = Get("/search?docs=8")
+        val request = Get("/search?q=bard")
 
         val expected =
           """{
@@ -37,14 +37,14 @@ class LeafNodeRouteTest extends FunSpec
       it("should get matching one document") {
         val LeafRoute = new LeafNodeRoute()
         lazy val routes: Route = LeafRoute.routes
-        val request = Get("/search?docs=1")
+        val request = Get("/search?q=cat")
 
         val expected =
           """{
             |  "hits" : [
             |    {
-            |      "id" : 1,
-            |      "body" : "dog 1"
+            |      "id" : 4,
+            |      "body" : "cat 4"
             |    }
             |  ]
             |}""".stripMargin
@@ -58,7 +58,7 @@ class LeafNodeRouteTest extends FunSpec
       it("should get matching documents") {
         val LeafRoute = new LeafNodeRoute()
         lazy val routes: Route = LeafRoute.routes
-        val request = Get("/search?docs=0,1")
+        val request = Get("/search?q=dog,cat")
 
         val expected =
           """{
@@ -70,6 +70,10 @@ class LeafNodeRouteTest extends FunSpec
             |    {
             |      "id" : 1,
             |      "body" : "dog 1"
+            |    },
+            |    {
+            |      "id" : 4,
+            |      "body" : "cat 4"
             |    }
             |  ]
             |}""".stripMargin

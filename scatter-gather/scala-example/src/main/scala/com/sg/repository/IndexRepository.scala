@@ -5,7 +5,7 @@ import com.sg.model.NodeSetting
 case class IndexRepository() {
   val wordIndex: Map[String, Seq[Int]] = Map(
     "dog" -> Seq(0, 1),
-    "cat" -> Seq(2, 3),
+    "cat" -> Seq(2, 3, 4),
     "bard" -> Seq(5, 8),
   )
 
@@ -18,22 +18,7 @@ case class IndexRepository() {
     8 -> NodeSetting.get(2),
   )
 
-  def getDocumentMap(words: Seq[String]): Map[NodeSetting, Seq[Int]] = {
-    val docIds = words.flatMap(wordIndex.get).flatten
-
-    docIds
-      .map {
-        docId => (nodeIndex.get(docId), docId)
-      }
-      .groupBy {
-        case (setting, _) => setting
-      }
-      .filter {
-        case (setting, _) => setting.isDefined
-      }
-      .map {
-        case (nodeSettingOpt, seq) =>
-          (nodeSettingOpt.get, seq.map { case (_, docId) => docId })
-      }
+  def getDocumentIds(words: Seq[String]): Seq[Int] = {
+    words.flatMap(wordIndex.get).flatten
   }
 }

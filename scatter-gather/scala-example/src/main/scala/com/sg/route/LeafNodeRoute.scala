@@ -3,20 +3,21 @@ package com.sg.route
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
 import com.sg.model.DocumentResponse
-import com.sg.repository.DocumentRepository
+import com.sg.repository.{DocumentRepository, IndexRepository}
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import io.circe.generic.auto._
 import io.circe.syntax._
 
 class LeafNodeRoute extends NodeRoute with FailFastCirceSupport {
   val documentRepository = DocumentRepository()
+  val indexRepository = IndexRepository()
 
   def routes: Route =
     path("search") {
-      parameter('docs) { docIdsParam =>
-        val docIds = docIdsParam.split(",").toSeq.map(_.toInt)
+      parameter('q) { param =>
+        val words: Seq[String] = param.split(",").toSeq
+        val docIds = indexRepository.getDocumentIds(words).toSeq
         val docs = documentRepository.findAll(docIds)
-        println(docs)
         val response = DocumentResponse(docs)
         complete(response.asJson)
       }

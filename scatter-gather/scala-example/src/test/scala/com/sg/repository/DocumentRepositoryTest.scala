@@ -15,7 +15,7 @@ class DocumentRepositoryTest extends FunSpec with Matchers {
 
     it("should return empty array from id which don't exists in directories") {
       val documentRepository = DocumentRepository()
-      val docs = documentRepository.findAll(Seq(1,2,4))
+      val docs = documentRepository.findAll(Seq(1,2,5))
       docs shouldBe Seq(Document(1, "dog 1"))
     }
   }
