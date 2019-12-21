@@ -1,24 +1,31 @@
 version: '3'
 services:
   root:
-    build: .
+    image: scatter-gather
     container_name: root_node
     environment:
       - SERVER_TYPE=root
+      - PORT=5000
+      - NODE_ID=root
     ports:
       - 5000:5000
 
   leaf1:
-    build: .
+    image: scatter-gather
     container_name: leaf1_node
     environment:
       - SERVER_TYPE=leaf
+      - PORT=5002
+      - NODE_ID=leaf1
     ports:
       - 5001:5001
+
   leaf2:
-    build: .
+    image: scatter-gather
     container_name: leaf2_node
     environment:
       - SERVER_TYPE=leaf
+      - PORT=5002
+      - NODE_ID=leaf2
     ports:
       - 5002:5002

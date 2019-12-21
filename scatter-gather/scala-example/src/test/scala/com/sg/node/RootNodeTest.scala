@@ -4,14 +4,17 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import com.sg.AkkaHttpClient
+import com.sg.model.NodeSetting
+import com.sg.repository.IndexRepository
 import io.circe.parser._
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FunSpec, Matchers}
 
+import scala.collection.mutable
 import scala.concurrent.Future
 
-class RootRouteTest extends FunSpec
+class RootNodeTest extends FunSpec
   with Matchers
   with ScalaFutures
   with ScalatestRouteTest
@@ -25,20 +28,20 @@ class RootRouteTest extends FunSpec
         """{
           |  "hits" : [
           |    {
-          |      "id" : 2,
-          |      "body" : "cat 2"
-          |    },
-          |    {
-          |      "id" : 3,
-          |      "body" : "cat 3"
-          |    },
-          |    {
           |      "id" : 0,
           |      "body" : "dog 0"
           |    },
           |    {
           |      "id" : 1,
           |      "body" : "dog 1"
+          |    },
+          |    {
+          |      "id" : 2,
+          |      "body" : "cat 2"
+          |    },
+          |    {
+          |      "id" : 3,
+          |      "body" : "cat 3"
           |    }
           |  ]
           |}""".stripMargin
@@ -71,14 +74,24 @@ class RootRouteTest extends FunSpec
           |  ]
           |}""".stripMargin
 
-      val routes: Route = new RootRoute {
+      val routes: Route = new RootNode {
         override val client: AkkaHttpClient = mock[AkkaHttpClient]
-        val urls: Seq[String] = Seq("http://localhost:5000/search?docs=0,1", "http://localhost:5001/search?docs=2,3")
+        override val indexRepository: IndexRepository = mock[IndexRepository]
+        val urls: Seq[String] = Seq(
+          s"${NodeSetting.get(1).localOrigin}/search?docs=0,1",
+          s"${NodeSetting.get(2).localOrigin}/search?docs=2,3"
+        )
 
         when(client.request(urls.head)).thenReturn(Future.successful(dogJson))
         when(client.request(urls(1))).thenReturn(Future.successful(catJson))
+        when(indexRepository.getDocumentMap(any[Seq[String]])).thenReturn(
+          Map(
+            NodeSetting.get(1) -> Seq(0, 1),
+            NodeSetting.get(2) -> Seq(2, 3),
+          )
+        )
       }.routes
-      val request = Get("/search?q=cat,dog")
+      val request = Get("/search?q=dog,cat")
 
       request ~> routes ~> check {
         status should ===(StatusCodes.OK)

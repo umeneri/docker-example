@@ -8,7 +8,7 @@ import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FunSpec, Matchers}
 
-class LeafRouteTest extends FunSpec
+class LeafNodeTest extends FunSpec
   with Matchers
   with ScalaFutures
   with ScalatestRouteTest
@@ -18,7 +18,7 @@ class LeafRouteTest extends FunSpec
 
     describe("leafRoute") {
       it("should get empty document") {
-        val LeafRoute = new LeafRoute()
+        val LeafRoute = new LeafNode()
         lazy val routes: Route = LeafRoute.routes
         val request = Get("/search?docs=8")
 
@@ -35,7 +35,7 @@ class LeafRouteTest extends FunSpec
       }
 
       it("should get matching one document") {
-        val LeafRoute = new LeafRoute()
+        val LeafRoute = new LeafNode()
         lazy val routes: Route = LeafRoute.routes
         val request = Get("/search?docs=1")
 
@@ -56,7 +56,7 @@ class LeafRouteTest extends FunSpec
       }
 
       it("should get matching documents") {
-        val LeafRoute = new LeafRoute()
+        val LeafRoute = new LeafNode()
         lazy val routes: Route = LeafRoute.routes
         val request = Get("/search?docs=0,1")
 

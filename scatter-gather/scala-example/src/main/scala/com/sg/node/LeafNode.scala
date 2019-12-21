@@ -8,7 +8,7 @@ import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import io.circe.generic.auto._
 import io.circe.syntax._
 
-class LeafRoute extends Node with FailFastCirceSupport {
+class LeafNode extends Node with FailFastCirceSupport {
   val documentRepository = DocumentRepository()
 
   def routes: Route =

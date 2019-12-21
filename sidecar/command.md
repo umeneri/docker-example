@@ -21,4 +21,3 @@ $ curl localhost:8080/topz
 
 よって、おそらく--pidはホスト側のPIDを共有する設定
 
-

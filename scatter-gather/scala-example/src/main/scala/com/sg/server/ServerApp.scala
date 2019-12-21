@@ -2,7 +2,7 @@ package com.sg.server
 
 import akka.actor.ActorSystem
 import akka.event.Logging
-import com.sg.node.{LeafRoute, RootRoute}
+import com.sg.node.{LeafNode, RootNode}
 import com.typesafe.config.ConfigFactory
 
 object ServerApp extends App
@@ -15,12 +15,12 @@ object ServerApp extends App
 
   val api = name match {
     case "root" =>
-      new RootRoute() {
+      new RootNode() {
         val log = Logging(system.eventStream, name)
         implicit val requestTimeout = configuredRequestTimeout(config)
       }
     case "leaf" =>
-      new LeafRoute() {
+      new LeafNode() {
         val log = Logging(system.eventStream, name)
         implicit val requestTimeout = configuredRequestTimeout(config)
       }

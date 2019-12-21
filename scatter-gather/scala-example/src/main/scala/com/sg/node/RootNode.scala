@@ -12,9 +12,10 @@ import io.circe.syntax._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RootRoute()(implicit ec: ExecutionContext) extends Node {
+class RootNode()(implicit ec: ExecutionContext) extends Node {
 
   val client = new AkkaHttpClient()
+  val indexRepository = IndexRepository()
 
   def routes: Route = path("search") {
     parameter('q) { param =>
@@ -25,13 +26,15 @@ class RootRoute()(implicit ec: ExecutionContext) extends Node {
   }
 
   private def fetchLeafResponse(keywords: String): Future[DocumentResponse] = {
-    val words = keywords.split(",")
-    val nodeMapping = IndexRepository().getDocumentMap(words).toSeq
+    val words: Seq[String] = keywords.split(",").toSeq
+    println(words)
+    val nodeMapping = indexRepository.getDocumentMap(words).toSeq
 
     Future.sequence {
-      nodeMapping.map { case (nodeId, docIds) =>
-        println(nodeId, docIds)
-        val url = s"http://localhost:500$nodeId/search?docs=${docIds.mkString(",")}"
+      nodeMapping.map { case (nodeSetting, docIds) =>
+        println(nodeSetting, docIds)
+        val url = s"${nodeSetting.localOrigin}/search?docs=${docIds.mkString(",")}"
+        println(url)
 
         client.request(url).map { res =>
           println(res)

@@ -1,5 +1,7 @@
 package com.sg.repository
 
+import com.sg.model.NodeSetting
+
 case class IndexRepository() {
   val wordIndex: Map[String, Seq[Int]] = Map(
     "dog" -> Seq(0, 1),
@@ -7,16 +9,16 @@ case class IndexRepository() {
     "bard" -> Seq(5, 8),
   )
 
-  val nodeIndex: Map[Int, Int] = Map(
-    0 -> 0,
-    1 -> 0,
-    2 -> 1,
-    3 -> 1,
-    5 -> 1,
-    8 -> 2,
+  val nodeIndex: Map[Int, NodeSetting] = Map(
+    0 -> NodeSetting.get(1),
+    1 -> NodeSetting.get(1),
+    2 -> NodeSetting.get(2),
+    3 -> NodeSetting.get(2),
+    5 -> NodeSetting.get(1),
+    8 -> NodeSetting.get(2),
   )
 
-  def getDocumentMap(words: Seq[String]): Map[Int, Seq[Int]] = {
+  def getDocumentMap(words: Seq[String]): Map[NodeSetting, Seq[Int]] = {
     val docIds = words.flatMap(wordIndex.get).flatten
 
     docIds
@@ -24,14 +26,14 @@ case class IndexRepository() {
         docId => (nodeIndex.get(docId), docId)
       }
       .groupBy {
-        case (id, _) => id
+        case (setting, _) => setting
       }
       .filter {
-        case (id, _) => id.isDefined
+        case (setting, _) => setting.isDefined
       }
       .map {
-        case (nodeIdOpt, seq) =>
-          (nodeIdOpt.get, seq.map { case (_, docId) => docId })
+        case (nodeSettingOpt, seq) =>
+          (nodeSettingOpt.get, seq.map { case (_, docId) => docId })
       }
   }
 }
