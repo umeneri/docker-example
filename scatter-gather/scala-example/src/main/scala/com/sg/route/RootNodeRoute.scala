@@ -1,4 +1,4 @@
-package com.sg.node
+package com.sg.route
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
@@ -12,7 +12,7 @@ import io.circe.syntax._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RootNode()(implicit ec: ExecutionContext) extends Node {
+class RootNodeRoute()(implicit ec: ExecutionContext) extends NodeRoute {
 
   val client = new AkkaHttpClient()
   val indexRepository = IndexRepository()

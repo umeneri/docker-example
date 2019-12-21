@@ -1,4 +1,4 @@
-package com.sg.node
+package com.sg.route
 
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Route
@@ -14,7 +14,7 @@ import org.scalatest.{FunSpec, Matchers}
 import scala.collection.mutable
 import scala.concurrent.Future
 
-class RootNodeTest extends FunSpec
+class RootNodeRouteTest extends FunSpec
   with Matchers
   with ScalaFutures
   with ScalatestRouteTest
@@ -74,7 +74,7 @@ class RootNodeTest extends FunSpec
           |  ]
           |}""".stripMargin
 
-      val routes: Route = new RootNode {
+      val routes: Route = new RootNodeRoute {
         override val client: AkkaHttpClient = mock[AkkaHttpClient]
         override val indexRepository: IndexRepository = mock[IndexRepository]
         val urls: Seq[String] = Seq(

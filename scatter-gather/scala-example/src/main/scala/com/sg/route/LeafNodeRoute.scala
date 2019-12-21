@@ -1,4 +1,4 @@
-package com.sg.node
+package com.sg.route
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
@@ -8,7 +8,7 @@ import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import io.circe.generic.auto._
 import io.circe.syntax._
 
-class LeafNode extends Node with FailFastCirceSupport {
+class LeafNodeRoute extends NodeRoute with FailFastCirceSupport {
   val documentRepository = DocumentRepository()
 
   def routes: Route =

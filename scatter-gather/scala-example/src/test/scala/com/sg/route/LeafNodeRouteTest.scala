@@ -1,4 +1,4 @@
-package com.sg.node
+package com.sg.route
 
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Route
@@ -8,7 +8,7 @@ import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FunSpec, Matchers}
 
-class LeafNodeTest extends FunSpec
+class LeafNodeRouteTest extends FunSpec
   with Matchers
   with ScalaFutures
   with ScalatestRouteTest
@@ -18,7 +18,7 @@ class LeafNodeTest extends FunSpec
 
     describe("leafRoute") {
       it("should get empty document") {
-        val LeafRoute = new LeafNode()
+        val LeafRoute = new LeafNodeRoute()
         lazy val routes: Route = LeafRoute.routes
         val request = Get("/search?docs=8")
 
@@ -35,7 +35,7 @@ class LeafNodeTest extends FunSpec
       }
 
       it("should get matching one document") {
-        val LeafRoute = new LeafNode()
+        val LeafRoute = new LeafNodeRoute()
         lazy val routes: Route = LeafRoute.routes
         val request = Get("/search?docs=1")
 
@@ -56,7 +56,7 @@ class LeafNodeTest extends FunSpec
       }
 
       it("should get matching documents") {
-        val LeafRoute = new LeafNode()
+        val LeafRoute = new LeafNodeRoute()
         lazy val routes: Route = LeafRoute.routes
         val request = Get("/search?docs=0,1")
 
