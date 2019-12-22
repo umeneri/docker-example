@@ -14,26 +14,6 @@ class AkkaHttpClient {
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
   def request(url: String): Future[String] = {
-    makeRequest(url)
-  }
-
-  //    val response =
-  //      """{
-  //        |  "hits" : [
-  //        |    {
-  //        |      "id" : 0,
-  //        |      "body" : "dog0"
-  //        |    },
-  //        |    {
-  //        |      "id" : 1,
-  //        |      "body" : "dog1"
-  //        |    }
-  //        |  ]
-  //        |}""".stripMargin
-  //
-  //    Future.successful(response)
-
-  private def makeRequest(url: String): Future[String] = {
     for {
       httpResponse <- Http().singleRequest(HttpRequest(uri = url))
       string <- Unmarshal(httpResponse.entity).to[String]

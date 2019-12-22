@@ -84,8 +84,8 @@ class RootNodeRouteTest extends FunSpec
       val routes: Route = new RootNodeRoute {
         override val client: AkkaHttpClient = mock[AkkaHttpClient]
         val urls: Seq[String] = Seq(
-          s"${NodeSetting.get(1).localOrigin}/search?q=dog,cat",
-          s"${NodeSetting.get(2).localOrigin}/search?q=dog,cat"
+          s"http://${NodeSetting.get(1).hostname}/search?q=dog,cat",
+          s"http://${NodeSetting.get(2).hostname}/search?q=dog,cat"
         )
 
         when(client.request(urls.head)).thenReturn(Future.successful(json1))

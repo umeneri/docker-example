@@ -15,8 +15,8 @@ class LeafNodeRoute extends NodeRoute with FailFastCirceSupport {
   def routes: Route =
     path("search") {
       parameter('q) { param =>
-        val words: Seq[String] = param.split(",").toSeq
-        val docIds = indexRepository.getDocumentIds(words).toSeq
+        val words = param.split(",").toSeq
+        val docIds = indexRepository.getDocumentIds(words)
         val docs = documentRepository.findAll(docIds)
         val response = DocumentResponse(docs)
         complete(response.asJson)
