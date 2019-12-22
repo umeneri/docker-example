@@ -10,3 +10,7 @@ unzip target/universal/scatter-gather-0.0.1.zip -d target/universal
 docker build . -t scatter-gather
 docker-compose up
 ```
+
+# curl example
+$ curl localhost:5000/search?q=dog,cat
+
