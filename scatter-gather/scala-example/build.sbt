@@ -19,7 +19,6 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-http-core" % akkaHttpVersion,
     "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
     "de.heikoseeberger" %% "akka-http-circe" % "1.25.2",
-    "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
     "com.typesafe.akka" %% "akka-multi-node-testkit" % akkaVersion % Test,
     "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
     "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test,
