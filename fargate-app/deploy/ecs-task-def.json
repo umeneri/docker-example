@@ -49,7 +49,7 @@
   ],
   "cpu": "256",
   "executionRoleArn": "arn:aws:iam::772010606571:role/ecs-task-execution",
-  "family": "farget-app-staging",
+  "family": "fargate-app-staging",
   "memory": "512",
   "networkMode": "awsvpc",
   "placementConstraints": [],
