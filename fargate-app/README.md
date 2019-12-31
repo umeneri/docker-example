@@ -11,6 +11,9 @@ $ docker build -t nginx nginx
 $ docker tag nginx:latest 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/nginx:latest
 $ docker push 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/nginx:latest
 
+$ docker build -t fargate-app-staging app
+$ docker tag fargate-app-staging:latest 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/fargate-app-staging:latest
+$ docker push 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/fargate-app-staging:latest
 
 # register task definition
 ```bash

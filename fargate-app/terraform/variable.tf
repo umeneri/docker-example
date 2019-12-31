@@ -24,7 +24,7 @@ variable "region" {
 }
 
 variable "task_name" {
-  default = "farget-app"
+  default = "fargate-app"
 }
 
 variable "stage" {

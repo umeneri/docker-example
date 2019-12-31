@@ -4,11 +4,34 @@
       "cpu": 0,
       "environment": [],
       "essential": true,
+      "image": "772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/fargete-app-staging:latest",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/fargate/task",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "fargate"
+        }
+      },
+      "mountPoints": [],
+      "name": "app",
+      "portMappings": [
+        {
+          "containerPort" : 8080,
+          "protocol" : "tcp"
+        }
+      ],
+      "volumesFrom": []
+    },
+    {
+      "cpu": 0,
+      "environment": [],
+      "essential": true,
       "image": "772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/nginx:latest",
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/fargat/task",
+          "awslogs-group": "/ecs/fargate/task",
           "awslogs-region": "ap-northeast-1",
           "awslogs-stream-prefix": "fargate"
         }

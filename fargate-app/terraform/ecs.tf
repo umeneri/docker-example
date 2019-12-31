@@ -3,7 +3,7 @@ resource "aws_ecs_cluster" "app_ecs_cluster" {
 }
 
 variable "log_group" {
-  default = "/ecs/fargat/task"
+  default = "/ecs/fargate/task"
 }
 
 resource "aws_ecs_service" "app_ecs_service" {
