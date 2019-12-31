@@ -18,8 +18,8 @@ resource "aws_lb" "app_lb" {
   security_groups = [
     "${aws_security_group.app_sg.id}"]
   subnets = [
-    "${aws_subnet.app_subnet_a.id}",
-    "${aws_subnet.app_subnet_c.id}",
+    "${aws_subnet.app_public_subnet_a.id}",
+    "${aws_subnet.app_public_subnet_c.id}",
   ]
   enable_deletion_protection = false
 

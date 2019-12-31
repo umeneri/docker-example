@@ -18,8 +18,8 @@ resource "aws_ecs_service" "app_ecs_service" {
 
   network_configuration {
     subnets = [
-      "${aws_subnet.app_subnet_a.id}",
-      "${aws_subnet.app_subnet_c.id}"]
+      "${aws_subnet.app_private_subnet_a.id}",
+      "${aws_subnet.app_private_subnet_c.id}"]
     security_groups = [
       "${aws_security_group.app_sg.id}"
     ]

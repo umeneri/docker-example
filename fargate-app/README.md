@@ -21,6 +21,10 @@ $ aws ecs register-task-definition --cli-input-json file://ecs-task-def.json
 $ terraform init
 $ terraform apply 
 
+# operation verification
+1. copy alb dns name
+2. access dns by browser
+
 # deploy by espresso
 
 
