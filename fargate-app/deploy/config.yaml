@@ -1,6 +1,6 @@
 region: ap-northeast-1
-cluster: farget-app-staging-cluster
-service: farget-app-staging-service
+cluster: fargate-app-staging-cluster
+service: fargate-app-staging-service
 #service_definition: ecs-service-def.json
 task_definition: ecs-task-def.json
 timeout: 10m0s
