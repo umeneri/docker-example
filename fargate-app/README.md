@@ -1,28 +1,30 @@
 # push image to ECR
-$ terraform apply --target=aws_ecr_repository.frontend
-$ $(aws ecr get-login --no-include-email --region ap-northeast-1)
 
-example:
-$ docker build -t [image] .
-$ docker tag [image]:latest [domain]/[image]:latest
-$ docker push [domain]/[image]:latest
-
-$ docker build -t frontend frontend
-$ docker tag frontend:latest 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/staging-frontend:latest
-$ docker push 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/staging-frontend:latest
-
-$ docker build -t backend backend
-$ docker tag backend:latest 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/staging-backend:latest
-$ docker push 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/staging-backend:latest
+```bash
+$(aws ecr get-login --no-include-email --region ap-northeast-1)
+cd terraform
+terraform init
+terraform apply --target=aws_ecr_repository.frontend
+terraform apply --target=aws_ecr_repository.backend
+cd docker
+./build.sh frontend
+./build.sh backend
+```
 
 # register task definition
+
 ```bash
-$ aws ecs register-task-definition --cli-input-json file://ecs-task-def.json
+cd deploy/frontend
+aws ecs register-task-definition --cli-input-json file://task-definition.json
+cd deploy/backend
+aws ecs register-task-definition --cli-input-json file://task-definition.json
 ```
 
 # terraform apply
-$ terraform init
-$ terraform apply 
+
+```bash
+terraform apply 
+```
 
 # operation verification
 1. copy alb dns name
@@ -30,4 +32,10 @@ $ terraform apply
 
 # deploy by espresso
 
+```bash
+cd deploy/frontend
+ecspresso deploy --config config.yaml
+cd deploy/backend
+ecspresso deploy --config config.yaml
+```
 
