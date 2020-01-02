@@ -24,25 +24,6 @@ resource "aws_service_discovery_service" "api_service_discovery" {
   }
 }
 
-resource "aws_service_discovery_service" "api_service_discovery2" {
-  name = "api2"
-
-  dns_config {
-    namespace_id = "${aws_service_discovery_private_dns_namespace.app_namespace.id}"
-
-    dns_records {
-      ttl  = 10
-      type = "A"
-    }
-
-    routing_policy = "MULTIVALUE"
-  }
-
-  health_check_custom_config {
-    failure_threshold = 1
-  }
-}
-
 resource "aws_ecs_service" "app_ecs_service_backend" {
   name = "${var.task_name}-${var.stage}-service-backend"
   cluster = "${aws_ecs_cluster.app_ecs_cluster.id}"
@@ -64,7 +45,7 @@ resource "aws_ecs_service" "app_ecs_service_backend" {
   }
 
   service_registries {
-    registry_arn = "${aws_service_discovery_service.api_service_discovery2.arn}"
+    registry_arn = "${aws_service_discovery_service.api_service_discovery.arn}"
   }
 }
 
