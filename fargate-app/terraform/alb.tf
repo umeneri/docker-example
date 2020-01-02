@@ -3,16 +3,17 @@ data "template_file" "lb_bucket_policy" {
 
   vars = {
     task_name = "${var.task_name}"
+    env = "${var.env}"
   }
 }
 resource "aws_s3_bucket" "lb_bucket" {
-  bucket = "${var.task_name}-lb-log"
+  bucket = "${var.env}-${var.task_name}-lb-log"
   acl    = "private"
   policy = "${data.template_file.lb_bucket_policy.rendered}"
 }
 
 resource "aws_lb" "app_lb" {
-  name = "${var.task_name}-alb"
+  name = "${var.env}-${var.task_name}-alb"
   internal = false
   load_balancer_type = "application"
   security_groups = [
@@ -25,17 +26,15 @@ resource "aws_lb" "app_lb" {
 
   access_logs {
     bucket = "${aws_s3_bucket.lb_bucket.bucket}"
-    prefix = "${var.task_name}"
+    prefix = "${var.env}-${var.task_name}"
     enabled = true
   }
 }
 
 resource "aws_lb_listener" "app_listener" {
   load_balancer_arn = "${aws_lb.app_lb.arn}"
-  port              = "80"
+  port              = 80
   protocol          = "HTTP"
-//  ssl_policy        = "ELBSecurityPolicy-2016-08"
-//  certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
 
   default_action {
     type             = "forward"
@@ -44,7 +43,7 @@ resource "aws_lb_listener" "app_listener" {
 }
 
 resource "aws_lb_target_group" "app_target_group" {
-  name = "${var.task_name}-lb-tg"
+  name = "${var.env}-${var.task_name}-lb-tg"
   port = 80
   protocol = "HTTP"
   vpc_id = "${aws_vpc.app_vpc.id}"

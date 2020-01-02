@@ -1,15 +1,11 @@
 resource "aws_ecs_cluster" "app_ecs_cluster" {
-  name = "${var.task_name}-${var.stage}-cluster"
+  name = "${var.env}-${var.task_name}-cluster"
 }
 
-variable "log_group" {
-  default = "/ecs/fargate/task"
-}
-
-resource "aws_ecs_service" "app_ecs_service" {
-  name = "${var.task_name}-${var.stage}-service"
+resource "aws_ecs_service" "app_ecs_frontend_service" {
+  name = "${var.env}-frontend-service"
   cluster = "${aws_ecs_cluster.app_ecs_cluster.id}"
-  task_definition = "${var.task_name}-${var.stage}"
+  task_definition = "${var.env}-frontend"
   desired_count = 1
   launch_type = "FARGATE"
   deployment_minimum_healthy_percent = 100
@@ -23,19 +19,18 @@ resource "aws_ecs_service" "app_ecs_service" {
     security_groups = [
       "${aws_security_group.app_sg.id}"
     ]
-//    assign_public_ip = true
     assign_public_ip = false
   }
 
   load_balancer {
     target_group_arn = "${aws_lb_target_group.app_target_group.arn}"
-    container_name = "nginx"
+    container_name = "frontend"
     container_port = 80
   }
 }
 
 //resource "aws_ecs_task_definition" "app_task_definition" {
-//  family = "${var.task_name}-${var.stage}-task-definition"
+//  family = "${var.env}-${var.task_name}-task-definition"
 //  requires_compatibilities = [
 //    "FARGATE"
 //  ]
@@ -48,8 +43,8 @@ resource "aws_ecs_service" "app_ecs_service" {
 //  container_definitions = <<DEFINITION
 //[
 //  {
-//    "name": "${var.task_name}-${var.stage}",
-//    "image": "772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/${var.task_name}-${var.stage}:latest",
+//    "name": "${var.stage}-${var.task_name}",
+//    "image": "772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/${var.stage}-${var.task_name}:latest",
 //    "essential": true,
 //    "portMappings": [],
 //    "environment": [],
@@ -65,6 +60,10 @@ resource "aws_ecs_service" "app_ecs_service" {
 //]
 //DEFINITION
 //}
+
+variable "log_group" {
+  default = "/ecs/fargate/task"
+}
 
 resource "aws_cloudwatch_log_group" "app_log" {
   name = "${var.log_group}"

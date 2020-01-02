@@ -24,10 +24,10 @@ resource "aws_service_discovery_service" "api_service_discovery" {
   }
 }
 
-resource "aws_ecs_service" "app_ecs_service_backend" {
-  name = "${var.task_name}-${var.stage}-service-backend"
+resource "aws_ecs_service" "app_ecs_backend_service" {
+  name = "${var.env}-backend-service"
   cluster = "${aws_ecs_cluster.app_ecs_cluster.id}"
-  task_definition = "${var.task_name}-${var.stage}"
+  task_definition = "${var.env}-backend"
   desired_count = 1
   launch_type = "FARGATE"
   deployment_minimum_healthy_percent = 100
@@ -48,4 +48,3 @@ resource "aws_ecs_service" "app_ecs_service_backend" {
     registry_arn = "${aws_service_discovery_service.api_service_discovery.arn}"
   }
 }
-

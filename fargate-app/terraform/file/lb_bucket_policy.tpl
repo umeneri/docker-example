@@ -8,7 +8,7 @@
         "s3:PutObject"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${task_name}-lb-log/*",
+      "Resource": "arn:aws:s3:::${env}-${task_name}-lb-log/*",
       "Principal": {
         "AWS": [
           "582318560864"

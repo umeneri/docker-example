@@ -4,30 +4,29 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "terraform-state-es"
-    key = "event-queue.tfstate"
+    bucket = "terraform-fargate-app"
+    key = "fargate-app.tfstate"
     region = "ap-northeast-1"
     profile = "terraform"
   }
 }
 
-variable "category" {
-  default = "example"
-}
 variable aws_profile {
   default = "terraform"
 }
-//variable "access_key" {}
-//variable "secret_key" {}
+
 variable "region" {
   default = "ap-northeast-1"
 }
 
-variable "task_name" {
-  default = "fargate-app"
+variable "category" {
+  default = "example"
 }
 
-variable "stage" {
+variable "task_name" {
+  default = "fargate"
+}
+
+variable "env" {
   default = "staging"
 }
-

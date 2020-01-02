@@ -1,5 +1,5 @@
 # push image to ECR
-$ terraform apply --target=aws_ecr_repository.nginx
+$ terraform apply --target=aws_ecr_repository.frontend
 $ $(aws ecr get-login --no-include-email --region ap-northeast-1)
 
 example:
@@ -7,13 +7,13 @@ $ docker build -t [image] .
 $ docker tag [image]:latest [domain]/[image]:latest
 $ docker push [domain]/[image]:latest
 
-$ docker build -t nginx nginx
-$ docker tag nginx:latest 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/nginx:latest
-$ docker push 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/nginx:latest
+$ docker build -t frontend frontend
+$ docker tag frontend:latest 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/staging-frontend:latest
+$ docker push 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/staging-frontend:latest
 
-$ docker build -t fargate-app-staging app
-$ docker tag fargate-app-staging:latest 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/fargate-app-staging:latest
-$ docker push 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/fargate-app-staging:latest
+$ docker build -t backend backend
+$ docker tag backend:latest 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/staging-backend:latest
+$ docker push 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/staging-backend:latest
 
 # register task definition
 ```bash
@@ -29,6 +29,5 @@ $ terraform apply
 2. access dns by browser
 
 # deploy by espresso
-
 
 
