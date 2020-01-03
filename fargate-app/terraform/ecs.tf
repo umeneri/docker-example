@@ -29,38 +29,6 @@ resource "aws_ecs_service" "app_ecs_frontend_service" {
   }
 }
 
-//resource "aws_ecs_task_definition" "app_task_definition" {
-//  family = "${var.env}-${var.task_name}-task-definition"
-//  requires_compatibilities = [
-//    "FARGATE"
-//  ]
-//  network_mode = "awsvpc"
-//  cpu = "256"
-//  memory = "512"
-//  execution_role_arn = "${aws_iam_role.app_ecs_task_execution_role.arn}"
-//  task_role_arn = "${aws_iam_role.app_task_role.arn}"
-//
-//  container_definitions = <<DEFINITION
-//[
-//  {
-//    "name": "${var.stage}-${var.task_name}",
-//    "image": "772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/${var.stage}-${var.task_name}:latest",
-//    "essential": true,
-//    "portMappings": [],
-//    "environment": [],
-//    "logConfiguration": {
-//      "logDriver": "awslogs",
-//      "options": {
-//        "awslogs-group": "${var.log_group}",
-//        "awslogs-region": "${var.region}",
-//        "awslogs-stream-prefix": "fargate"
-//      }
-//    }
-// }
-//]
-//DEFINITION
-//}
-
 variable "log_group" {
   default = "/ecs/fargate/task"
 }

@@ -1,17 +1,3 @@
-data "template_file" "lb_bucket_policy" {
-  template = "${file("file/lb_bucket_policy.tpl")}"
-
-  vars = {
-    task_name = "${var.task_name}"
-    env = "${var.env}"
-  }
-}
-resource "aws_s3_bucket" "lb_bucket" {
-  bucket = "${var.env}-${var.task_name}-lb-log"
-  acl    = "private"
-  policy = "${data.template_file.lb_bucket_policy.rendered}"
-}
-
 resource "aws_lb" "app_lb" {
   name = "${var.env}-${var.task_name}-alb"
   internal = false
@@ -23,12 +9,6 @@ resource "aws_lb" "app_lb" {
     "${aws_subnet.app_public_subnet_c.id}",
   ]
   enable_deletion_protection = false
-
-  access_logs {
-    bucket = "${aws_s3_bucket.lb_bucket.bucket}"
-    prefix = "${var.env}-${var.task_name}"
-    enabled = true
-  }
 }
 
 resource "aws_lb_listener" "app_listener" {

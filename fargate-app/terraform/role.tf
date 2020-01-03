@@ -1,11 +1,8 @@
-data "aws_caller_identity" "current" {}
-
 resource "aws_iam_role" "app_task_role" {
   name               = "${var.env}-${var.task_name}"
   assume_role_policy = "${data.aws_iam_policy_document.app_task_role_assume_role_policy_document.json}"
 }
 
-# assigns the app policy
 resource "aws_iam_role_policy" "app_task_policy" {
   name   = "${var.env}-${var.task_name}"
   role   = "${aws_iam_role.app_task_role.id}"
@@ -24,7 +21,6 @@ data "aws_iam_policy_document" "app_task_policy_document" {
   }
 }
 
-# allow role to be assumed by ecs and local saml users (for development)
 data "aws_iam_policy_document" "app_task_role_assume_role_policy_document" {
   statement {
     actions = ["sts:AssumeRole"]
