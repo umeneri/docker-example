@@ -29,11 +29,7 @@ resource "aws_ecs_service" "app_ecs_frontend_service" {
   }
 }
 
-variable "log_group" {
-  default = "/ecs/fargate/task"
-}
-
 resource "aws_cloudwatch_log_group" "app_log" {
-  name = "${var.log_group}"
+  name = "/ecs/fargate/task"
   retention_in_days = 14
 }
