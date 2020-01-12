@@ -7,6 +7,7 @@ resource "aws_security_group" "app_sg" {
   }
 }
 
+// 外部からのアクセスは80番ポートを許可する
 resource "aws_security_group_rule" "ingress" {
   type = "ingress"
   from_port = 80
@@ -18,6 +19,7 @@ resource "aws_security_group_rule" "ingress" {
   security_group_id = "${aws_security_group.app_sg.id}"
 }
 
+// 内部からのアクセスはすべてを許可する
 resource "aws_security_group_rule" "egress" {
   type = "egress"
   from_port = 0

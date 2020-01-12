@@ -11,6 +11,7 @@ resource "aws_ecs_service" "app_ecs_frontend_service" {
   deployment_minimum_healthy_percent = 100
   deployment_maximum_percent = 200
   health_check_grace_period_seconds = 100
+  depends_on = [aws_lb.app_lb] // 依存の自動解決ができないため
 
   network_configuration {
     subnets = [

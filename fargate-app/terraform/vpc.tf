@@ -48,31 +48,6 @@ resource "aws_subnet" "app_private_subnet_c" {
   }
 }
 
-resource "aws_internet_gateway" "app_internet_gateway" {
-  vpc_id = "${aws_vpc.app_vpc.id}"
-
-  tags =  {
-    Name = "${var.category}-igw"
-  }
-}
-
-resource "aws_eip" "app_nat_gateway_eip" {
-  vpc = true
-
-  tags = {
-    Name = "${var.category}-ip"
-  }
-}
-
-resource "aws_nat_gateway" "app_nat_gateway" {
-  allocation_id = "${aws_eip.app_nat_gateway_eip.id}"
-  subnet_id     = "${aws_subnet.app_public_subnet_a.id}"
-
-  tags = {
-    Name = "${var.category}-ngw"
-  }
-}
-
 resource "aws_route_table" "app_public_route_table" {
   vpc_id = "${aws_vpc.app_vpc.id}"
 
@@ -117,4 +92,32 @@ resource "aws_route_table_association" "app_table_association_a" {
 resource "aws_route_table_association" "app_table_association_c" {
   subnet_id = "${aws_subnet.app_private_subnet_c.id}"
   route_table_id = "${aws_route_table.app_private_route_table.id}"
+}
+
+// 外部からECSへアクセスするために必要
+resource "aws_internet_gateway" "app_internet_gateway" {
+  vpc_id = "${aws_vpc.app_vpc.id}"
+
+  tags =  {
+    Name = "${var.category}-igw"
+  }
+}
+
+// 内部からECRへアクセスするために必要
+resource "aws_nat_gateway" "app_nat_gateway" {
+  allocation_id = "${aws_eip.app_nat_gateway_eip.id}"
+  subnet_id     = "${aws_subnet.app_public_subnet_a.id}"
+
+  tags = {
+    Name = "${var.category}-ngw"
+  }
+}
+
+// ナットゲートウェイ用のEIP
+resource "aws_eip" "app_nat_gateway_eip" {
+  vpc = true
+
+  tags = {
+    Name = "${var.category}-ip"
+  }
 }
