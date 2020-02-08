@@ -1,0 +1,6 @@
+redmineUsername: gihyo1
+redminePassword: gihyo1
+redmineLanguage: ja
+
+serviceType: NodePort
+
