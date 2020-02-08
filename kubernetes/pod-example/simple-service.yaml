@@ -3,7 +3,8 @@ kind: Service
 metadata:
   name: echo
 spec:
-  type: NodePort
+  # type: ExternalName
+  # externalName: gihyo-docker
   selector:
     app: echo
     release: summer
